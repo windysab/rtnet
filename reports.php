@@ -72,182 +72,211 @@ switch ($action) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan - RT/RW Net</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Laporan - RT/RW Net Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/css/dashboard.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
-            width: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 0;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
             z-index: 1000;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         
-        .sidebar .nav-link {
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu .nav-link {
             color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
+            padding: 0.75rem 1.5rem;
             border-radius: 0;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
+        .sidebar-menu .nav-link:hover,
+        .sidebar-menu .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         .main-content {
-            margin-left: 250px;
+            margin-left: var(--sidebar-width);
             min-height: 100vh;
-            background: #f8f9fa;
         }
         
         .top-navbar {
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 1rem 2rem;
             margin-bottom: 2rem;
         }
         
         .stats-card {
-            background: #fff;
-            border-radius: 15px;
+            background: white;
+            border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: none;
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
+            transition: transform 0.3s ease;
         }
         
         .stats-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         
         .stats-icon {
             width: 60px;
             height: 60px;
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-size: 1.5rem;
+            color: white;
         }
         
         .content-card {
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: none;
-            overflow: hidden;
         }
         
-        .breadcrumb {
-            background: transparent;
-            padding: 0;
-            margin: 0;
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #495057;
         }
         
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: ">";
-            color: #6c757d;
-        }
-        
-        .user-profile {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-        
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            font-size: 1.5rem;
-            color: #fff;
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
         }
     </style>
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="user-profile">
-            <div class="user-avatar">
-                <i class="bi bi-person"></i>
-            </div>
-            <h6 class="text-white mb-0">Admin</h6>
-            <small class="text-white-50">RT/RW Net</small>
+        <div class="sidebar-header">
+            <h4 class="mb-0">
+                <i class="bi bi-wifi me-2"></i>
+                RT/RW Net
+            </h4>
+            <small class="text-light opacity-75">Management System</small>
         </div>
         
-        <nav class="nav flex-column">
-            <a class="nav-link" href="dashboard.php">
-                <i class="bi bi-speedometer2 me-2"></i>Dashboard
-            </a>
-            <a class="nav-link" href="customers.php">
-                <i class="bi bi-people me-2"></i>Pelanggan
-            </a>
-            <a class="nav-link" href="packages.php">
-                <i class="bi bi-box me-2"></i>Paket
-            </a>
-            <a class="nav-link" href="invoices.php">
-                <i class="bi bi-file-earmark-text me-2"></i>Invoice
-            </a>
-            <a class="nav-link" href="payments.php">
-                <i class="bi bi-credit-card me-2"></i>Pembayaran
-            </a>
-            <a class="nav-link" href="monitoring.php">
-                <i class="bi bi-activity me-2"></i>Monitoring
-            </a>
-            <a class="nav-link active" href="reports.php">
-                <i class="bi bi-graph-up me-2"></i>Laporan
-            </a>
-            <a class="nav-link" href="mikrotik.php">
-                <i class="bi bi-router me-2"></i>MikroTik
-            </a>
-            <a class="nav-link" href="settings.php">
-                <i class="bi bi-gear me-2"></i>Pengaturan
-            </a>
-            <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
-            <a class="nav-link" href="logout.php">
-                <i class="bi bi-box-arrow-right me-2"></i>Logout
-            </a>
+        <nav class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.php">
+                        <i class="bi bi-speedometer2 me-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="customers.php">
+                        <i class="bi bi-people me-2"></i>
+                        Pelanggan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="packages.php">
+                        <i class="bi bi-box me-2"></i>
+                        Paket Layanan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="invoices.php">
+                        <i class="bi bi-receipt me-2"></i>
+                        Tagihan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="payments.php">
+                        <i class="bi bi-credit-card me-2"></i>
+                        Pembayaran
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="monitoring.php">
+                        <i class="bi bi-activity me-2"></i>
+                        Monitoring
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="reports.php">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Laporan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mikrotik.php">
+                        <i class="bi bi-router me-2"></i>
+                        MikroTik
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="settings.php">
+                        <i class="bi bi-gear me-2"></i>
+                        Pengaturan
+                    </a>
+                </li>
+            </ul>
         </nav>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="top-navbar">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h4 class="mb-0">Laporan</h4>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Laporan</li>
-                        </ol>
-                    </nav>
-                </div>
-                <div class="text-muted">
-                    <i class="bi bi-clock me-1"></i>
-                    <span id="current-time"></span>
-                </div>
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-0">Laporan</h4>
+                <small class="text-muted">Kelola dan lihat laporan sistem</small>
+            </div>
+            
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Admin
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profil</a></li>
+                    <li><a class="dropdown-item" href="change-password.php"><i class="bi bi-key me-2"></i>Ubah Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
             </div>
         </div>
         
-        <div class="container-fluid">
+        <!-- Content -->
+        <div class="container-fluid px-4">
             <div class="row">
                 <div class="col-md-3">
                     <div class="content-card">
@@ -533,6 +562,12 @@ switch ($action) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto refresh reports every 5 minutes
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
+    </script>
 </body>
 </html>

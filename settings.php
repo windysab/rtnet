@@ -52,38 +52,199 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengaturan Sistem - RT/RW Net</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Pengaturan Sistem - RT/RW Net Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/dashboard.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu .nav-link:hover,
+        .sidebar-menu .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        
+        .top-navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">
-                <i class="fas fa-wifi me-2"></i>RT/RW Net
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="index.php">Dashboard</a>
-                <a class="nav-link" href="customers.php">Pelanggan</a>
-                <a class="nav-link" href="packages.php">Paket</a>
-                <a class="nav-link" href="invoices.php">Invoice</a>
-                <a class="nav-link" href="payments.php">Pembayaran</a>
-                <a class="nav-link" href="monitoring.php">Monitoring</a>
-                <a class="nav-link" href="reports.php">Laporan</a>
-                <a class="nav-link active" href="settings.php">Pengaturan</a>
-                <a class="nav-link" href="logout.php">Logout</a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">
+                <i class="bi bi-wifi me-2"></i>
+                RT/RW Net
+            </h4>
+            <small class="text-light opacity-75">Management System</small>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.php">
+                        <i class="bi bi-speedometer2 me-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="customers.php">
+                        <i class="bi bi-people me-2"></i>
+                        Pelanggan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="packages.php">
+                        <i class="bi bi-box me-2"></i>
+                        Paket Layanan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="invoices.php">
+                        <i class="bi bi-receipt me-2"></i>
+                        Tagihan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="payments.php">
+                        <i class="bi bi-credit-card me-2"></i>
+                        Pembayaran
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="monitoring.php">
+                        <i class="bi bi-activity me-2"></i>
+                        Monitoring
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reports.php">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Laporan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mikrotik.php">
+                        <i class="bi bi-router me-2"></i>
+                        MikroTik
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="settings.php">
+                        <i class="bi bi-gear me-2"></i>
+                        Pengaturan
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-0">Pengaturan Sistem</h4>
+                <small class="text-muted">Kelola pengaturan sistem RT/RW Net</small>
+            </div>
+            
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Admin
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profil</a></li>
+                    <li><a class="dropdown-item" href="change-password.php"><i class="bi bi-key me-2"></i>Ubah Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="fas fa-cog me-2"></i>Pengaturan Sistem</h5>
-                    </div>
-                    <div class="card-body">
+        
+        <!-- Content -->
+        <div class="container-fluid px-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content-card">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <h5 class="card-title mb-0"><i class="bi bi-gear me-2"></i>Pengaturan Sistem</h5>
+                        </div>
+                        <div class="card-body">
                         <?php if ($message): ?>
                             <div class="alert alert-<?= $messageType ?> alert-dismissible fade show" role="alert">
                                 <?= htmlspecialchars($message) ?>
@@ -95,9 +256,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <div class="row">
                                 <!-- Company Information -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fas fa-building me-2"></i>Informasi Perusahaan</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-building me-2"></i>Informasi Perusahaan</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -129,9 +290,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- MikroTik Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fas fa-router me-2"></i>Pengaturan MikroTik</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-router me-2"></i>Pengaturan MikroTik</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -164,9 +325,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- Billing Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fas fa-file-invoice me-2"></i>Pengaturan Billing</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-receipt me-2"></i>Pengaturan Billing</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -204,9 +365,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- Email Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fas fa-envelope me-2"></i>Pengaturan Email</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-envelope me-2"></i>Pengaturan Email</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -239,9 +400,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- WhatsApp Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fab fa-whatsapp me-2"></i>Pengaturan WhatsApp</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-whatsapp me-2"></i>Pengaturan WhatsApp</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -262,9 +423,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- Telegram Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fab fa-telegram me-2"></i>Pengaturan Telegram</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-telegram me-2"></i>Pengaturan Telegram</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -285,9 +446,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                                 <!-- Monitoring Settings -->
                                 <div class="col-md-6">
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h6><i class="fas fa-chart-line me-2"></i>Pengaturan Monitoring</h6>
+                                    <div class="content-card mb-4">
+                                        <div class="card-header bg-transparent border-0 pb-0">
+                                            <h6 class="card-title mb-0"><i class="bi bi-graph-up me-2"></i>Pengaturan Monitoring</h6>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-3">
@@ -319,7 +480,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
                             <div class="text-end">
                                 <button type="submit" name="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-2"></i>Simpan Pengaturan
+                                    <i class="bi bi-check-circle me-2"></i>Simpan Pengaturan
                                 </button>
                             </div>
                         </form>
@@ -331,25 +492,25 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <!-- Test Connection Section -->
         <div class="row mt-4">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="fas fa-plug me-2"></i>Test Koneksi</h5>
+                <div class="content-card">
+                    <div class="card-header bg-transparent border-0 pb-0">
+                        <h5 class="card-title mb-0"><i class="bi bi-plug me-2"></i>Test Koneksi</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <button type="button" class="btn btn-outline-primary w-100 mb-2" onclick="testMikroTikConnection()">
-                                    <i class="fas fa-router me-2"></i>Test Koneksi MikroTik
+                                    <i class="bi bi-router me-2"></i>Test Koneksi MikroTik
                                 </button>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn btn-outline-success w-100 mb-2" onclick="testEmailConnection()">
-                                    <i class="fas fa-envelope me-2"></i>Test Koneksi Email
+                                    <i class="bi bi-envelope me-2"></i>Test Koneksi Email
                                 </button>
                             </div>
                             <div class="col-md-4">
                                 <button type="button" class="btn btn-outline-info w-100 mb-2" onclick="testWhatsAppConnection()">
-                                    <i class="fab fa-whatsapp me-2"></i>Test WhatsApp API
+                                    <i class="bi bi-whatsapp me-2"></i>Test WhatsApp API
                                 </button>
                             </div>
                         </div>
@@ -358,9 +519,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function testMikroTikConnection() {
             showTestResult('Testing MikroTik connection...', 'info');
