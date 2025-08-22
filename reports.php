@@ -74,124 +74,274 @@ switch ($action) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan - RT/RW Net</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/dashboard.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 0;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+        
+        .top-navbar {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stats-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .content-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ">";
+            color: #6c757d;
+        }
+        
+        .user-profile {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+    </style>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">
-                <i class="fas fa-wifi me-2"></i>RT/RW Net
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="index.php">Dashboard</a>
-                <a class="nav-link" href="customers.php">Pelanggan</a>
-                <a class="nav-link" href="packages.php">Paket</a>
-                <a class="nav-link" href="invoices.php">Invoice</a>
-                <a class="nav-link" href="payments.php">Pembayaran</a>
-                <a class="nav-link" href="monitoring.php">Monitoring</a>
-                <a class="nav-link active" href="reports.php">Laporan</a>
-                <a class="nav-link" href="logout.php">Logout</a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="bi bi-person"></i>
             </div>
+            <h6 class="text-white mb-0">Admin</h6>
+            <small class="text-white-50">RT/RW Net</small>
         </div>
-    </nav>
+        
+        <nav class="nav flex-column">
+            <a class="nav-link" href="dashboard.php">
+                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            </a>
+            <a class="nav-link" href="customers.php">
+                <i class="bi bi-people me-2"></i>Pelanggan
+            </a>
+            <a class="nav-link" href="packages.php">
+                <i class="bi bi-box me-2"></i>Paket
+            </a>
+            <a class="nav-link" href="invoices.php">
+                <i class="bi bi-file-earmark-text me-2"></i>Invoice
+            </a>
+            <a class="nav-link" href="payments.php">
+                <i class="bi bi-credit-card me-2"></i>Pembayaran
+            </a>
+            <a class="nav-link" href="monitoring.php">
+                <i class="bi bi-activity me-2"></i>Monitoring
+            </a>
+            <a class="nav-link active" href="reports.php">
+                <i class="bi bi-graph-up me-2"></i>Laporan
+            </a>
+            <a class="nav-link" href="mikrotik.php">
+                <i class="bi bi-router me-2"></i>MikroTik
+            </a>
+            <a class="nav-link" href="settings.php">
+                <i class="bi bi-gear me-2"></i>Pengaturan
+            </a>
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
+            <a class="nav-link" href="logout.php">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a>
+        </nav>
+    </div>
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="fas fa-chart-bar me-2"></i>Menu Laporan</h5>
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <a href="?action=dashboard" class="list-group-item list-group-item-action <?= $action === 'dashboard' ? 'active' : '' ?>">
-                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                        </a>
-                        <a href="?action=customers" class="list-group-item list-group-item-action <?= $action === 'customers' ? 'active' : '' ?>">
-                            <i class="fas fa-users me-2"></i>Laporan Pelanggan
-                        </a>
-                        <a href="?action=revenue" class="list-group-item list-group-item-action <?= $action === 'revenue' ? 'active' : '' ?>">
-                            <i class="fas fa-money-bill-wave me-2"></i>Laporan Pendapatan
-                        </a>
-                        <a href="?action=bandwidth" class="list-group-item list-group-item-action <?= $action === 'bandwidth' ? 'active' : '' ?>">
-                            <i class="fas fa-chart-line me-2"></i>Laporan Bandwidth
-                        </a>
-                        <a href="?action=top_users" class="list-group-item list-group-item-action <?= $action === 'top_users' ? 'active' : '' ?>">
-                            <i class="fas fa-trophy me-2"></i>Top Users
-                        </a>
-                        <a href="?action=packages" class="list-group-item list-group-item-action <?= $action === 'packages' ? 'active' : '' ?>">
-                            <i class="fas fa-box me-2"></i>Laporan Paket
-                        </a>
-                        <a href="?action=payments" class="list-group-item list-group-item-action <?= $action === 'payments' ? 'active' : '' ?>">
-                            <i class="fas fa-credit-card me-2"></i>Laporan Pembayaran
-                        </a>
-                        <a href="?action=invoices" class="list-group-item list-group-item-action <?= $action === 'invoices' ? 'active' : '' ?>">
-                            <i class="fas fa-file-invoice me-2"></i>Laporan Invoice
-                        </a>
-                    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-navbar">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0">Laporan</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Laporan</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="text-muted">
+                    <i class="bi bi-clock me-1"></i>
+                    <span id="current-time"></span>
                 </div>
             </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="content-card">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <h5 class="card-title mb-0"><i class="bi bi-list-ul me-2"></i>Menu Laporan</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="?action=dashboard" class="list-group-item list-group-item-action <?= $action === 'dashboard' ? 'active' : '' ?>">
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                            </a>
+                            <a href="?action=customers" class="list-group-item list-group-item-action <?= $action === 'customers' ? 'active' : '' ?>">
+                                <i class="bi bi-people me-2"></i>Laporan Pelanggan
+                            </a>
+                            <a href="?action=revenue" class="list-group-item list-group-item-action <?= $action === 'revenue' ? 'active' : '' ?>">
+                                <i class="bi bi-cash-stack me-2"></i>Laporan Pendapatan
+                            </a>
+                            <a href="?action=bandwidth" class="list-group-item list-group-item-action <?= $action === 'bandwidth' ? 'active' : '' ?>">
+                                <i class="bi bi-graph-up me-2"></i>Laporan Bandwidth
+                            </a>
+                            <a href="?action=top_users" class="list-group-item list-group-item-action <?= $action === 'top_users' ? 'active' : '' ?>">
+                                <i class="bi bi-trophy me-2"></i>Top Users
+                            </a>
+                            <a href="?action=packages" class="list-group-item list-group-item-action <?= $action === 'packages' ? 'active' : '' ?>">
+                                <i class="bi bi-box me-2"></i>Laporan Paket
+                            </a>
+                            <a href="?action=payments" class="list-group-item list-group-item-action <?= $action === 'payments' ? 'active' : '' ?>">
+                                <i class="bi bi-credit-card me-2"></i>Laporan Pembayaran
+                            </a>
+                            <a href="?action=invoices" class="list-group-item list-group-item-action <?= $action === 'invoices' ? 'active' : '' ?>">
+                                <i class="bi bi-file-earmark-text me-2"></i>Laporan Invoice
+                            </a>
+                        </div>
+                    </div>
+                </div>
             
             <div class="col-md-9">
                 <?php if ($action === 'dashboard'): ?>
                     <!-- Dashboard Summary -->
                     <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?= number_format($summary['total_customers']) ?></h4>
-                                            <p class="mb-0">Total Pelanggan</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-users fa-2x"></i>
-                                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="stats-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <div class="text-muted small">Total Pelanggan</div>
+                                        <div class="h4 mb-0"><?= number_format($summary['total_customers']) ?></div>
+                                        <small class="text-muted">Semua pelanggan</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card bg-success text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?= number_format($summary['active_customers']) ?></h4>
-                                            <p class="mb-0">Pelanggan Aktif</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-user-check fa-2x"></i>
-                                        </div>
+                        
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="stats-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                                        <i class="bi bi-person-check"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <div class="text-muted small">Pelanggan Aktif</div>
+                                        <div class="h4 mb-0"><?= number_format($summary['active_customers']) ?></div>
+                                        <small class="text-muted">Status aktif</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card bg-info text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?= number_format($summary['online_customers']) ?></h4>
-                                            <p class="mb-0">Sedang Online</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-wifi fa-2x"></i>
-                                        </div>
+                        
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="stats-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);">
+                                        <i class="bi bi-wifi"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <div class="text-muted small">Sedang Online</div>
+                                        <div class="h4 mb-0"><?= number_format($summary['online_customers']) ?></div>
+                                        <small class="text-muted">Terhubung sekarang</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card bg-warning text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4>Rp <?= number_format($summary['monthly_revenue']) ?></h4>
-                                            <p class="mb-0">Pendapatan Bulan Ini</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-money-bill-wave fa-2x"></i>
-                                        </div>
+                        
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="stats-card">
+                                <div class="d-flex align-items-center">
+                                    <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+                                        <i class="bi bi-cash-stack"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <div class="text-muted small">Pendapatan Bulan Ini</div>
+                                        <div class="h4 mb-0">Rp <?= number_format($summary['monthly_revenue']) ?></div>
+                                        <small class="text-muted">Total revenue</small>
                                     </div>
                                 </div>
                             </div>
@@ -200,9 +350,10 @@ switch ($action) {
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Invoice Pending & Overdue</h5>
+                            <div class="content-card">
+                                <div class="card-header d-flex align-items-center">
+                                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                                    <h5 class="mb-0">Invoice Pending & Overdue</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row text-center">
@@ -219,17 +370,18 @@ switch ($action) {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Quick Actions</h5>
+                            <div class="content-card">
+                                <div class="card-header d-flex align-items-center">
+                                    <i class="bi bi-lightning text-primary me-2"></i>
+                                    <h5 class="mb-0">Quick Actions</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="d-grid gap-2">
                                         <a href="?action=revenue" class="btn btn-primary">
-                                            <i class="fas fa-chart-line me-2"></i>Lihat Laporan Pendapatan
+                                            <i class="bi bi-graph-up me-2"></i>Lihat Laporan Pendapatan
                                         </a>
                                         <a href="?action=top_users" class="btn btn-info">
-                                            <i class="fas fa-trophy me-2"></i>Lihat Top Users
+                                            <i class="bi bi-trophy me-2"></i>Lihat Top Users
                                         </a>
                                     </div>
                                 </div>
@@ -239,22 +391,25 @@ switch ($action) {
                     
                 <?php else: ?>
                     <!-- Report Content -->
-                    <div class="card">
+                    <div class="content-card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <?php
-                                $titles = [
-                                    'customers' => 'Laporan Pelanggan',
-                                    'revenue' => 'Laporan Pendapatan',
-                                    'bandwidth' => 'Laporan Bandwidth',
-                                    'top_users' => 'Top Users',
-                                    'packages' => 'Laporan Paket',
-                                    'payments' => 'Laporan Pembayaran',
-                                    'invoices' => 'Laporan Invoice'
-                                ];
-                                echo isset($titles[$action]) ? $titles[$action] : 'Laporan';
-                                ?>
-                            </h5>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-text text-primary me-2"></i>
+                                <h5 class="mb-0">
+                                    <?php
+                                    $titles = [
+                                        'customers' => 'Laporan Pelanggan',
+                                        'revenue' => 'Laporan Pendapatan',
+                                        'bandwidth' => 'Laporan Bandwidth',
+                                        'top_users' => 'Top Users',
+                                        'packages' => 'Laporan Paket',
+                                        'payments' => 'Laporan Pembayaran',
+                                        'invoices' => 'Laporan Invoice'
+                                    ];
+                                    echo isset($titles[$action]) ? $titles[$action] : 'Laporan';
+                                    ?>
+                                </h5>
+                            </div>
                             <div>
                                 <?php if (in_array($action, ['customers', 'revenue', 'bandwidth', 'top_users'])): ?>
                                     <form method="GET" class="d-inline-flex align-items-center me-2">
@@ -265,7 +420,7 @@ switch ($action) {
                                     </form>
                                 <?php endif; ?>
                                 <a href="?action=<?= $action ?>&start_date=<?= $start_date ?>&end_date=<?= $end_date ?>&export=1" class="btn btn-sm btn-success">
-                                    <i class="fas fa-download me-1"></i>Export CSV
+                                    <i class="bi bi-download me-1"></i>Export CSV
                                 </a>
                             </div>
                         </div>

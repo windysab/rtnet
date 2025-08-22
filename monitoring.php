@@ -80,10 +80,114 @@ $recent_notifications = $notification->getAll(['limit' => 5]);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring - RT/RW Net</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Monitoring - RT/RW Net Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/css/dashboard.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu .nav-link:hover,
+        .sidebar-menu .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+        
+        .top-navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -121,121 +225,208 @@ $recent_notifications = $notification->getAll(['limit' => 5]);
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">
-                <i class="bi bi-router"></i> RT/RW Net
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="dashboard.php">Dashboard</a>
-                <a class="nav-link active" href="monitoring.php">Monitoring</a>
-                <a class="nav-link" href="logout.php">Logout</a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4 class="mb-0">
+                <i class="bi bi-wifi me-2"></i>
+                RT/RW Net
+            </h4>
+            <small class="text-light opacity-75">Management System</small>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.php">
+                        <i class="bi bi-speedometer2 me-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="customers.php">
+                        <i class="bi bi-people me-2"></i>
+                        Pelanggan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="packages.php">
+                        <i class="bi bi-box me-2"></i>
+                        Paket Layanan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="invoices.php">
+                        <i class="bi bi-receipt me-2"></i>
+                        Tagihan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="payments.php">
+                        <i class="bi bi-credit-card me-2"></i>
+                        Pembayaran
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="monitoring.php">
+                        <i class="bi bi-activity me-2"></i>
+                        Monitoring
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reports.php">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Laporan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mikrotik.php">
+                        <i class="bi bi-router me-2"></i>
+                        MikroTik
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="settings.php">
+                        <i class="bi bi-gear me-2"></i>
+                        Pengaturan
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div class="top-navbar d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-0">Monitoring</h4>
+                <small class="text-muted">Monitoring & Notifikasi Sistem</small>
+            </div>
+            
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-2"></i>
+                    <?= htmlspecialchars($auth->getCurrentAdmin()['username']) ?>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profil</a></li>
+                    <li><a class="dropdown-item" href="change-password.php"><i class="bi bi-key me-2"></i>Ubah Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
             </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><i class="bi bi-activity"></i> Monitoring & Notifikasi</h2>
-                    <div class="btn-group">
-                        <a href="?action=check_online" class="btn btn-primary">
-                            <i class="bi bi-arrow-clockwise"></i> Cek Status Online
-                        </a>
-                        <a href="?action=collect_bandwidth" class="btn btn-info">
-                            <i class="bi bi-download"></i> Collect Bandwidth
-                        </a>
-                        <a href="?action=send_reminders" class="btn btn-warning">
-                            <i class="bi bi-bell"></i> Kirim Reminder
-                        </a>
-                    </div>
-                </div>
-
-                <?php if ($message): ?>
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <?= htmlspecialchars($message) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($error): ?>
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <?= htmlspecialchars($error) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="stat-card success">
-                    <div class="d-flex justify-content-between">
+        
+        <!-- Content -->
+        <div class="container-fluid px-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h3><?= isset($stats['stats']['online_customers']) ? $stats['stats']['online_customers'] : 0 ?></h3>
-                            <p class="mb-0">Pelanggan Online</p>
+                            <h5 class="mb-0">Monitoring & Notifikasi</h5>
+                            <small class="text-muted">Status online pelanggan dan sistem notifikasi</small>
                         </div>
-                        <div class="align-self-center">
-                            <i class="bi bi-wifi" style="font-size: 2rem;"></i>
-                        </div>
-                    </div>
-                    <small><?= isset($stats['stats']['online_percentage']) ? $stats['stats']['online_percentage'] : 0 ?>% dari total pelanggan</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card warning">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h3><?= isset($stats['stats']['offline_customers']) ? $stats['stats']['offline_customers'] : 0 ?></h3>
-                            <p class="mb-0">Pelanggan Offline</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="bi bi-wifi-off" style="font-size: 2rem;"></i>
+                        <div class="btn-group">
+                            <a href="?action=check_online" class="btn btn-primary">
+                                <i class="bi bi-arrow-clockwise"></i> Cek Status Online
+                            </a>
+                            <a href="?action=collect_bandwidth" class="btn btn-info">
+                                <i class="bi bi-download"></i> Collect Bandwidth
+                            </a>
+                            <a href="?action=send_reminders" class="btn btn-warning">
+                                <i class="bi bi-bell"></i> Kirim Reminder
+                            </a>
                         </div>
                     </div>
-                    <small>Tidak terhubung saat ini</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card info">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h3><?= isset($stats['stats']['total_bandwidth_today_mb']) ? $stats['stats']['total_bandwidth_today_mb'] : 0 ?> MB</h3>
-                            <p class="mb-0">Bandwidth Hari Ini</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="bi bi-speedometer2" style="font-size: 2rem;"></i>
-                        </div>
-                    </div>
-                    <small>Total pemakaian</small>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h3><?= isset($stats['stats']['pending_reminders']) ? $stats['stats']['pending_reminders'] : 0 ?></h3>
-                            <p class="mb-0">Pending Reminder</p>
-                        </div>
-                        <div class="align-self-center">
-                            <i class="bi bi-bell" style="font-size: 2rem;"></i>
-                        </div>
-                    </div>
-                    <small>Tagihan akan jatuh tempo</small>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <!-- Online Customers -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="bi bi-people"></i> Pelanggan Online</h5>
+                    <?php if ($message): ?>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <?= htmlspecialchars($message) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <?= htmlspecialchars($error) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                                <i class="bi bi-wifi"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-muted small">Pelanggan Online</div>
+                                <div class="h4 mb-0"><?= isset($stats['stats']['online_customers']) ? number_format($stats['stats']['online_customers']) : 0 ?></div>
+                                <small class="text-success"><?= isset($stats['stats']['online_percentage']) ? $stats['stats']['online_percentage'] : 0 ?>% dari total</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
+                </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);">
+                                <i class="bi bi-wifi-off"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-muted small">Pelanggan Offline</div>
+                                <div class="h4 mb-0"><?= isset($stats['stats']['offline_customers']) ? number_format($stats['stats']['offline_customers']) : 0 ?></div>
+                                <small class="text-muted">Tidak terhubung saat ini</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);">
+                                <i class="bi bi-speedometer2"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-muted small">Bandwidth Hari Ini</div>
+                                <div class="h4 mb-0"><?= isset($stats['stats']['total_bandwidth_today_mb']) ? number_format($stats['stats']['total_bandwidth_today_mb']) : 0 ?> MB</div>
+                                <small class="text-muted">Total pemakaian</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+                                <i class="bi bi-bell"></i>
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-muted small">Pending Reminder</div>
+                                <div class="h4 mb-0"><?= isset($stats['stats']['pending_reminders']) ? number_format($stats['stats']['pending_reminders']) : 0 ?></div>
+                                <small class="text-muted">Tagihan akan jatuh tempo</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Online Customers -->
+                <div class="col-md-6">
+                    <div class="content-card">
+                        <div class="card-header bg-transparent border-0 pb-0">
+                            <h5 class="card-title mb-0"><i class="bi bi-people me-2"></i>Pelanggan Online</h5>
+                        </div>
+                        <div class="card-body">
                         <?php if (empty($online_customers)): ?>
                             <p class="text-muted">Tidak ada pelanggan yang online saat ini.</p>
                         <?php else: ?>
@@ -282,9 +473,9 @@ $recent_notifications = $notification->getAll(['limit' => 5]);
 
             <!-- Top Users -->
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="bi bi-graph-up"></i> Top Users (Bulan Ini)</h5>
+                <div class="content-card">
+                    <div class="card-header bg-transparent border-0 pb-0">
+                        <h5 class="card-title mb-0"><i class="bi bi-graph-up me-2"></i>Top Users (Bulan Ini)</h5>
                     </div>
                     <div class="card-body">
                         <?php if ($top_users['success'] && !empty($top_users['data'])): ?>
@@ -325,9 +516,9 @@ $recent_notifications = $notification->getAll(['limit' => 5]);
         <div class="row">
             <!-- Notification Statistics -->
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5><i class="bi bi-bell"></i> Statistik Notifikasi</h5>
+                <div class="content-card">
+                    <div class="card-header bg-transparent border-0 pb-0">
+                        <h5 class="card-title mb-0"><i class="bi bi-bell me-2"></i>Statistik Notifikasi</h5>
                     </div>
                     <div class="card-body">
                         <?php if ($notification_stats['success']): ?>
@@ -370,9 +561,9 @@ $recent_notifications = $notification->getAll(['limit' => 5]);
 
             <!-- Recent Notifications -->
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5><i class="bi bi-clock-history"></i> Notifikasi Terbaru</h5>
+                <div class="content-card">
+                    <div class="card-header bg-transparent border-0 pb-0 d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="bi bi-clock-history me-2"></i>Notifikasi Terbaru</h5>
                         <a href="notifications.php" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
                     </div>
                     <div class="card-body">
